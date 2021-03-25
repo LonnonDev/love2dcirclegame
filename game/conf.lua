@@ -1,5 +1,5 @@
 function love.conf(t)
   t.console = true
-  t.window.width = 800
-  t.window.height = 500
+  t.window.width = 1280
+  t.window.height = 720
 end
