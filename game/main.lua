@@ -1,42 +1,41 @@
+Object = require "classic"
+
+gameWidth = love.graphics.getWidth()
+gameHeight = love.graphics.getHeight()
+
+Game = Object:extend()
+
 function love.load(arg)
-  love.window.setTitle("ball game click the balls")
-
-  button = {}
-  button.x = 200
-  button.y = 200
-  button.size = 100
-
-  score = 0
-  timer = 0
-
-  myFont = love.graphics.newFont(15)
+  mousex = 0
+  mousey = 0
+  love.window.setTitle("cirno pong game")
+  music = love.audio.newSource("sound/music/cirno.mp3","stream")
+  music:setLooping(true)
+  music:setVolume(.1)
+  music:play()
+  require "game"
+  require "entity"
+  require "pad"
+  require "pad0"
+  require "padMouse"
+  require "ball"
+  game = Game()
 end
 
 function love.update(dt)
-  if love.math.random(1,20) == 20 then
-    button.x = love.math.random(0,love.graphics.getWidth())
-    button.y = love.math.random(0,love.graphics.getHeight())
-  end
+  mousex = love.mouse.getX()
+  mousey = love.mouse.getY()
+  game:update(dt)
 end
 
 function love.draw()
-  love.graphics.setColor(255, 255, 255)
-  love.graphics.circle("fill", button.x, button.y, button.size)
-
-  love.graphics.setFont(myFont)
-
-  love.graphics.print("welcome to brain abuser this game abuses your brain to make you happy btw your score is "..score)
+  game:draw()
+  cirnoim = love.graphics.draw(love.graphics.newImage("graphics/sprites/cirno.png"), ballx, bally, r, .3, .3, ox, oy, kx, ky)
+  cirnoim = nil
+  love.graphics.print(ballxspeed,0,0,0,3,3)
+  love.graphics.print(ballyspeed,0,50,0,3,3)
 end
 
-function love.mousepressed(x, y, b, isTouch)
-  if b == 1 then
-    if distanceBetween(love.mouse.getX(),love.mouse.getY(),button.x,button.y) < button.size then
-        score = score + 1
-    end
-  end
-end
-
-function distanceBetween(x1,y1,x2,y2)
+function Distance(x1,y1,x2,y2)
   return math.sqrt((y2-y1)^2 + (x2 - x1)^2)
-  --if distanceBetween(love.mouse.getX(),love.mouse.getY(),x,y) < size then
 end
